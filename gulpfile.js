@@ -1,96 +1,120 @@
-var gulp    = require('gulp'),
-    sass    = require('gulp-sass'),
-    concat  = require('gulp-concat'),
-    bowerFiles   = require('main-bower-files'),
-    autoprefixer = require('gulp-autoprefixer'),
-    uglify  = require('gulp-uglify'),
-    jshint  = require('gulp-jshint'),
-    rename  = require('gulp-rename'),
-    notify  = require('gulp-notify'),
-    minifyCSS   = require('gulp-minify-css'),
-    browserSync = require('browser-sync');
+var gulp = require('gulp'),
+  bowerFiles = require('main-bower-files'),
+  $ = require('gulp-load-plugins')({ lazy: true }),
+  browserSync = require('browser-sync');
 
 var paths = {
-        in : {
-            public     : 'public/',
-            scripts    : 'resources/js/',
-            sass       : 'resources/sass/'
-        },
-        out : {
-            fonts      : 'public/fonts',
-            public     : 'public',
-            scripts    : 'public/js',
-            styles     : 'public/css'
-        }
-    };
+  resources: {
+    javascript: 'src/js/',
+    sass: 'src/sass/',
+    images: 'src/images/',
+    index: 'public/',
+    views: 'public/views/'
+  },
+  public: {
+    fonts: 'public/assets/fonts',
+    scripts: 'public/assets/js',
+    styles: 'public/assets/css',
+    images: 'public/assets/images',
+    index: 'public',
+    views: 'public/views'
+  }
+};
 
-var files = {
-        css    : '*.css',
-        js     : '*.js',
-        html   : '*.html',
-        sass   : '*/*.scss',
-        script : 'script.js',
-        style  : 'style.scss'
-    };
+var fileExt = {
+  css: '*.css',
+  js: '*.js',
+  sass: '*/*.scss',
+  script: 'script.js',
+  styleSASS: 'style.scss',
+  all: '**',
+  html: '*.html'
+};
 
-gulp.task('styles', function() {
-    return gulp.src( paths.in.sass + files.style )
-            .pipe( sass({ errLogToConsole: true }) )
-            .pipe( autoprefixer('last 5 version') )
-            .pipe( rename({ suffix: '.min' }) )
-            .pipe( minifyCSS() )
-            .pipe( gulp.dest(paths.out.styles) )
-            .pipe( notify( function(file) {
-                return 'SASS Compiler file: '+ file.relative;
-            }) );
+gulp.task('styles', function () {
+  return gulp.src(paths.resources.sass + fileExt.styleSASS)
+    .pipe($.sass().on('error', $.sass.logError))
+    .pipe($.autoprefixer('last 5 version'))
+    .pipe($.rename({ suffix: '.min' }))
+    .pipe($.cleanCss())
+    .pipe(gulp.dest(paths.public.styles))
+    .pipe($.notify(function (file) {
+      return 'Compiler SASS file: ' + file.relative;
+    }));
 });
 
-gulp.task('scripts', function() {
-    return gulp.src( paths.in.scripts + files.script )
-        .pipe( jshint('.jshintrc') )
-        .pipe( jshint.reporter('default') )
-        .pipe( rename({ suffix: '.min' }) )
-        .pipe( uglify() )
-        .pipe( gulp.dest(paths.out.scripts) )
-        .pipe( notify( function(file) {
-            return 'Scripts Compiler file: '+ file.relative;
-        }) );
+gulp.task('scripts', function () {
+  return gulp.src(paths.resources.javascript + fileExt.script)
+    .pipe($.plumber())
+    .pipe($.babel({
+      presets: ['@babel/env']
+    }))
+    .pipe($.rename({ suffix: '.min' }))
+    .pipe($.uglify())
+    .pipe(gulp.dest(paths.public.scripts))
+    .pipe($.notify(function (file) {
+      return 'Compiler Scripts file: ' + file.relative;
+    }));
 });
 
-gulp.task('bower_styles', function() {
-    return gulp.src( bowerFiles('**/' + files.css) )
-            .pipe( concat('components.min.css') )
-            .pipe( minifyCSS() )
-            .pipe( gulp.dest(paths.out.styles) )
-            .pipe( notify( function(file) {
-                return 'Bower CSS Compiler file: '+ file.relative;
-            }) );
+gulp.task('stylesBower', function () {
+  return gulp.src(bowerFiles('**/' + fileExt.css))
+    .pipe($.concat('components.min.css'))
+    .pipe($.cleanCss())
+    .pipe(gulp.dest(paths.public.styles))
+    .pipe($.notify(function (file) {
+      return 'Compiler Bower Styles file: ' + file.relative;
+    }));
 });
 
-gulp.task('bower_scripts', function() {
-    return gulp.src( bowerFiles('**/' + files.js) )
-            .pipe( concat('components.min.js') )
-            .pipe( uglify() )
-            .pipe( gulp.dest(paths.out.scripts) )
-            .pipe( notify( function(file) {
-                return 'Bower Compiler file: '+ file.relative;
-            }) );
+gulp.task('scriptsBower', function () {
+  return gulp.src(bowerFiles('**/' + fileExt.js))
+    .pipe($.concat('components.min.js'))
+    .pipe($.uglify())
+    .pipe(gulp.dest(paths.public.scripts))
+    .pipe($.notify(function (file) {
+      return 'Compiler Bower Scripts file: ' + file.relative;
+    }));
 });
 
-gulp.task('browser_sync', function() {
-    browserSync.init(null, {
-        server: { baseDir: paths.out.public }
-    });
+gulp.task('images', function () {
+  return gulp.src(paths.resources.images + fileExt.all)
+    .pipe($.changed('images'))
+    .pipe($.imagemin({
+      progressive: true,
+      interlaced: true
+    }))
+    .pipe(gulp.dest(paths.public.images))
+    .pipe($.size({ title: 'images' }))
+    .pipe($.notify(function (file) {
+      return 'Optimizes the images: ' + file.relative;
+    }));
 });
 
-gulp.task('bs_reload', function() {
-    browserSync.reload();
+gulp.task('browserSync', function () {
+  browserSync.init(null, {
+    server: { baseDir: paths.public.index }
+  });
 });
 
-gulp.task('watch', function() {
-    gulp.watch( paths.in.sass + files.sass, ['styles'] );
-    gulp.watch( paths.in.scripts + files.js, ['scripts'] );
-    gulp.watch( paths.in.app + files.html, ['bs_reload'] );
+gulp.task('bsReload', function () {
+  browserSync.reload();
 });
 
-gulp.task('default', [ 'styles', 'scripts', 'bower_styles', 'bower_scripts', 'browser_sync', 'watch' ]);
+gulp.task('watch', function () {
+  gulp.watch(paths.resources.sass + fileExt.sass, ['styles']);
+  gulp.watch(paths.resources.javascript + fileExt.js, ['scripts']);
+  gulp.watch(paths.resources.index + fileExt.html, ['bsReload']);
+  gulp.watch(paths.resources.views + fileExt.html, ['bsReload']);
+});
+
+gulp.task('default', function () {
+  gulp.start(
+    'styles',
+    'scripts',
+    'stylesBower',
+    'scriptsBower',
+    'browserSync',
+    'watch'
+  );
+});
