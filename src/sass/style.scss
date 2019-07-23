@@ -1,0 +1,19 @@
+@import 'node_modules/bower_components/bootstrap/scss/bootstrap';
+@import 'node_modules/bower_components/font-awesome/scss/font-awesome.scss';
+
+// SCSS MIXINS
+@import 'mixins/_position.scss';
+
+// CONFIG MODULES
+@import 'modules/_vars.scss';
+@import 'modules/_defaults.scss';
+@import 'modules/_normalize.scss';
+@import 'modules/_typography.scss';
+@import 'modules/_app.scss';
+@import 'modules/_animated.scss';
+
+// COMPONENTS
+@import 'components/_main.scss';
+
+// RESPONSIVE
+@import 'modules/_breakpoints.scss';

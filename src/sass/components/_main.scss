@@ -1,0 +1,72 @@
+#main { 
+  position: relative;
+
+  #information {
+    left: 50%;
+    position: absolute;
+    z-index: 1;
+
+    .card {
+      background-color: rgba(255,255,255, .65);
+      border-color: transparent;
+      border-radius: rem(2);
+
+      .card-body {
+        position: relative;
+
+        h1 {
+          cursor: default;
+          @include fonts($colorPrimary, $fontLight, 45);
+          line-height: rem(48);
+          margin: 30px 0 15px;
+
+          strong {
+            font-family: $fontRegular;
+          }  
+        }
+
+        p {
+          @include fonts($colorPrimary, $fontRegular, 21);
+          line-height: rem(22);
+        }
+
+        .links {
+          .link {
+            color: $colorPrimary;
+            font-size: rem(22);
+            transition: all .15s ease-in;
+      
+            &:hover {
+              color: $colorSecond;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#loading {
+  background-color: $colorPrimary;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 100%;
+  z-index: 1001;
+
+  .load-image {
+    padding-top: 45vh;
+
+    img {
+      animation: swing 5s infinite;
+      width: 5%;
+    }
+
+    small {
+      @include fonts(white, $fontLight, 18);
+      line-height: rem(19);
+    }
+  }
+}
