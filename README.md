@@ -1,2 +1,1 @@
-# DaloPhotography
-Photography website
+# DaloPhotography website
