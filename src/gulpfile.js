@@ -12,12 +12,12 @@ var paths = {
     views: 'public/views/'
   },
   public: {
-    fonts: 'public/assets/fonts',
-    scripts: 'public/assets/js',
-    styles: 'public/assets/css',
-    images: 'public/assets/images',
-    index: 'public',
-    views: 'public/views'
+    fonts: '../assets/fonts',
+    scripts: '../assets/js',
+    styles: '../assets/css',
+    images: '../assets/images',
+    index: '../',
+    views: '../views'
   }
 };
 
@@ -28,7 +28,6 @@ var fileExt = {
   script: 'script.js',
   styleSASS: 'style.scss',
   all: '**',
-  html: '*.html'
 };
 
 gulp.task('styles', function () {
@@ -77,20 +76,6 @@ gulp.task('scriptsBower', function () {
     }));
 });
 
-gulp.task('images', function () {
-  return gulp.src(paths.resources.images + fileExt.all)
-    .pipe($.changed('images'))
-    .pipe($.imagemin({
-      progressive: true,
-      interlaced: true
-    }))
-    .pipe(gulp.dest(paths.public.images))
-    .pipe($.size({ title: 'images' }))
-    .pipe($.notify(function (file) {
-      return 'Optimizes the images: ' + file.relative;
-    }));
-});
-
 gulp.task('browserSync', function () {
   browserSync.init(null, {
     server: { baseDir: paths.public.index }
@@ -105,7 +90,6 @@ gulp.task('watch', function () {
   gulp.watch(paths.resources.sass + fileExt.sass, ['styles']);
   gulp.watch(paths.resources.javascript + fileExt.js, ['scripts']);
   gulp.watch(paths.resources.index + fileExt.html, ['bsReload']);
-  gulp.watch(paths.resources.views + fileExt.html, ['bsReload']);
 });
 
 gulp.task('default', function () {
