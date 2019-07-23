@@ -1,133 +1,25 @@
 @media handheld, only screen and (min-width: 768px) and (max-width: 1024px) {
-
-  header {
-
-    #header-top {
-
-      #header-share {
-        padding-left: 0;
-      }
-    }
-  }
 }
 
 @media handheld, only screen and (min-width: 768px) and (max-width: 1023px) {
-
 }
 
 @media handheld, only screen and (max-width: 736px) {
-
-  header {
-
-    #header-top {
-
-      #header-share {
-        padding-left: 15px;
-
-        #contact-mailing,
-        #contact-phone,
-        #main-redes {
-          text-align: center !important;
-        }
-      }
-    }
-  }
-
-  #home {
-    padding-bottom: 40px;
-    padding-top: 50px;
-
-    h2 {
-      margin: 0 0 15px;
-
-      a {
-        font-size: rem(80);
-
-        &:after {
-          bottom: 0;
-        }
-      }
-    }
-  }
-
-  #portfolio {
-
-    .portfolio-item {
-      background-color: transparent;
-    }
-  }
-
-  .main {
-
-    h1 {
-      font-size: rem(80);
-
-      &:after {
-        font-size: rem(27);
-      }
+  #main {
+    #information {
+      bottom: 0;
+      left: inherit;
+      right: 0;
+      top: inherit !important;
     }
   }
 }
 
 @media handheld, only screen and (max-width: 414px) {
-
-  footer {
-    text-align: center !important;
-
-    #footer-redes {
-      text-align: center !important;
-    }
-  }
-
-  #home {
-    padding-bottom: 30px;
-    padding-top: 40px;
-
-    h2 {
-      margin: 10px 0 15px;
-
-      a {
-        font-size: rem(45);
-
-        &:after {
-          font-size: rem(22);
-        }
-      }
-    }
-  } 
-
-  #contact,
-  #customers,
-  #portfolio {
-
-    .no-padding {
-      padding-left: 15px;
-      padding-right: 15px;
-    }
-  }
-
-  #sitemap {
-
-    #footer-menu {
-
-      ul {
-
-        li {
-          display: block;
-        }
-      }
-    }
-  }
-  
-
-  .main {
-
-    h1 {
-      font-size: rem(45);
-
-      &:after {
-        font-size: rem(22);
-      }
+  #main {
+    #information {
+      left: 0;
+      right: inherit;
     }
   }
 }
