@@ -1,5 +1,3 @@
-# BEGIN
 <IfModule mod_rewrite.c>
-
     RewriteRule ^favicon\.ico$ favicon.ico [L]
 </IfModule>
