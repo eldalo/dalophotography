@@ -8,16 +8,14 @@ var paths = {
     javascript: 'src/js/',
     sass: 'src/sass/',
     images: 'src/images/',
-    index: '',
-    views: 'views/'
+    index: ''
   },
   public: {
     fonts: 'assets/fonts',
     scripts: 'assets/js',
     styles: 'assets/css',
     images: 'assets/images',
-    index: '/',
-    views: 'views'
+    index: ''
   }
 };
 
@@ -89,7 +87,6 @@ gulp.task('bsReload', function () {
 gulp.task('watch', function () {
   gulp.watch(paths.resources.sass + fileExt.sass, ['styles']);
   gulp.watch(paths.resources.javascript + fileExt.js, ['scripts']);
-  gulp.watch(paths.resources.index + fileExt.html, ['bsReload']);
 });
 
 gulp.task('default', function () {
